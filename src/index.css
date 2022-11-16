@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.state-loading,
+.icon-load.progress-disabled {
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.state-loading:before,
+.icon-load.progress-disabled:before {
+  -webkit-animation: loader 0.75s linear;
+  -webkit-animation-iteration-count: infinite;
+  animation: loader 0.75s linear;
+  animation-iteration-count: infinite;
+  border-color: transparent #212529 #212529;
+  /*border-color: #707070 #F2F3F4 #F2F3F4; */
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 0.25em;
+  box-shadow: 0 0 0 1px transparent;
+  content: "";
+  height: 1.5em;
+  left: 50%;
+  margin: -0.75em 0 0 -0.74em;
+  position: absolute;
+  top: 50%;
+  width: 1.5em;
+  z-index: 5;
+}
+
+.state-loading:after,
+.icon-load.progress-disabled:after {
+  background-color: rgba(204, 204, 204, 0.7);
+  border-radius: 3px;
+  /* border-radius: 4px; */
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+@keyframes loader {
+  100% {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+
+.shake-error {
+  animation: shakeError 75ms 5 ease-in alternate;
+}
+@keyframes shakeError {
+  0% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}

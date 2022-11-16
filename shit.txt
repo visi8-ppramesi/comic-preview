@@ -1,0 +1,7 @@
+maybe think about changing collection/subcollection reference data as its own type (instead of object type), so that dataurl can be fetched automatically
+chapter sharded counters
+    implement on view
+    implement on functions
+implement buy comic
+integrate video on chapter 2
+error when back button is pressed before loader is done

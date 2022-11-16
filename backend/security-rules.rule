@@ -1,0 +1,225 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+  	match /temporary_files/{file}{
+    	allow read, write: if isAdmin();
+    }
+
+    match /config/{config}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /notifications/{user}{
+      allow read: if belongsTo(user) || isAdmin();
+      allow create: if belongsTo(user) || isAdmin();
+      allow update: if belongsTo(user) || isAdmin();
+      allow delete: if isAdmin();
+      
+      match /comics/{notification}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow create: if belongsTo(user) || isAdmin();
+        allow update: if belongsTo(user) || isAdmin();
+        allow delete: if isAdmin();
+      }
+    }
+
+    match /users/{user}{
+      allow list: if isAdmin();
+      allow get: if belongsTo(user) || isAdmin();
+      allow update: if belongsTo(user) || isAdmin();
+      allow delete: if belongsTo(user) || isAdmin();
+      allow create: if canCreateUser() || isAdmin();
+
+      //only allowed through functions
+      match /orders/{order}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow create: if isAdmin();
+        allow delete: if isAdmin()
+        allow update: if cancelOrder() || isAdmin();
+      }
+
+      //only allowed through functions
+      match /purchased_comics/{comic}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /read_history/{history}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow write: if belongsTo(user) || isAdmin();
+      }
+
+      //only allowed through functions
+      match /receipts/{receipt}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      function cancelOrder(){
+        return request.auth.uid != null && 
+          belongsTo(user) &&
+          request.resource.data.status == 'cancelled';
+      }
+
+      function canCreateUser(){
+        return request.resource.data.keys().hasOnly(['email', 'name', 'full_name', 'bookmarks', 'favorites', 'comic_subscriptions', 'profile_image_url']);
+      }
+    }
+    
+    // match /{path=**}/pages/{page} {
+    // 	allow read: if isAdmin();
+    //   allow write: if isAdmin();
+    // }
+
+    match /comics/{comic}{
+      allow read: if true;
+      allow write: if isAdmin() || favToggle();// || increment();
+
+      match /counters/{counter}{
+        allow read: if true;//isAdmin();
+        allow write: if isAdmin() || increment();
+      }
+
+      match /chapters/{chapter}{
+        allow read: if isAdmin() || checkIfFree() || checkIfOwned() || !checkIfChapterExists();
+        allow write: if isAdmin();// || increment();
+
+        match /counters/{counter}{
+          allow read: if true;//isAdmin();
+          allow write: if isAdmin() || increment();
+        }
+
+        match /pages/{page}{
+          allow read: if checkIfFree() || checkIfOwned() || isAdmin() || !checkIfPageExists();
+          allow write: if isAdmin();
+          
+          match /extras/{extra}{
+            allow read: if true;
+            allow write: if isAdmin();
+          }
+          
+          match /scenes/{scene}{
+            allow read: if true;
+            allow write: if isAdmin();
+          }
+
+          function checkIfPageExists(){
+            return exists(/databases/$(database)/documents/comics/$(comic)/chapters/$(chapter)/pages/$(pages))
+          }
+        }
+
+        function checkIfChapterExists(){
+          return exists(/databases/$(database)/documents/comics/$(comic)/chapters/$(chapter))
+        }
+
+        function checkIfFree(){
+          return get(/databases/$(database)/documents/comics/$(comic)/chapters/$(chapter)).data.price == 0;
+        }
+
+        function checkIfOwned(){
+          return request.auth.uid != null && (
+            /databases/$(database)/documents/comics/$(comic)/chapters/$(chapter) in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
+            'all' in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters);
+        }
+      }
+
+      match /comments/{comment}{
+        allow read: if true;
+        allow create: if isAdmin() || (isLoggedIn() && commentFieldCheck(['user', 'user_data', 'message', 'flag', 'created_date']) && commentRequestCurrentUser());
+        allow update: if isAdmin() || (isLoggedIn() && commentFieldCheck(['message']) && commentResourceCurrentUser());
+        allow delete: if isAdmin() || (isLoggedIn() && commentResourceCurrentUser());
+
+        function commentResourceCurrentUser(){
+          return /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user;
+        }
+
+        function commentRequestCurrentUser(){
+          return /databases/$(database)/documents/users/$(request.auth.uid) == request.resource.data.user;
+        }
+
+        function commentFieldCheck(fieldCheck){
+          return request.resource.data.keys().hasOnly(fieldCheck);
+        }
+      }
+      
+      function increment(){
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
+      }
+
+      function favToggle(){
+        let favCheck = /databases/$(database)/documents/comics/$(comic) in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.favorites;
+        return isLoggedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['favorite_count']) && (
+          (request.resource.data.favorite_count == (resource.data.favorite_count + 1) && !favCheck) ||
+          (request.resource.data.favorite_count == (resource.data.favorite_count - 1) && favCheck && resource.data.favorite_count > 0)
+        );
+      }
+    }
+
+    match /async_components/{async_component}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /user_roles/{user}{
+      allow read: if belongsTo(user) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /authors_split/{authorSplit}{
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /authors/{author}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /tags/{tag}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /categories/{category}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /settings/{setting}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /{path=**}/counters/{counter} {
+     allow read: if isAdmin();
+     allow write: if isAdmin();
+    }
+    
+    match /{path=**}/comments/{comment} {
+     allow read: if isAdmin();
+     allow write: if isAdmin();
+    }
+
+  	match /{document=**} {
+    	allow read, write: if isAdmin();
+    }
+
+    function isLoggedIn(){
+      return request.auth.uid != null;
+    }
+
+    function belongsTo(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // function hasRole(role){
+    //   return role in get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.roles;
+    // }
+
+    function isAdmin(){
+      return 'admin' in get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.roles;
+    }
+  }
+}

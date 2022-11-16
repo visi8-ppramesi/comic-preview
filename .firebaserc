@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "comics-77200"
+  },
+  "targets": {
+    "comics-77200": {
+      "hosting": {
+        "webcomic-preview": [
+          "webcomic-preview"
+        ]
+      }
+    }
+  }
+}
