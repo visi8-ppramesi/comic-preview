@@ -26,6 +26,7 @@ import axios from 'axios'
 // import comicStore from './utils/idbStore.js'
 import { logger, errorInterceptor } from './utils/logger.js'
 import fb from './firebase/firebase.js'
+import isNil from 'lodash/isNil'
 // import { createI18n } from 'vue-i18n'
 // import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -67,6 +68,20 @@ window.detectors = {
     canRunAr
 }
 // const emitter = mitt()
+
+const formatters = {
+    absoluteTime: function (time, locale = "id-ID") {
+        if (isNil(time)) return null;
+        if (typeof time === "number" || typeof time === "string") {
+            time = new Date(time);
+        }
+        if (typeof time.toDate === "function") {
+            time = time.toDate();
+        }
+        const intlFormatter = new Intl.DateTimeFormat(locale);
+        return intlFormatter.format(time);
+    }
+}
 const injector = {
     install(app){
         vuePropertySetter(app, 'emitter', emitter)
@@ -81,6 +96,7 @@ const injector = {
         vuePropertySetter(app, 'asyncComponentLoader', asyncComponentLoader)
         vuePropertySetter(app, '$toast', Toaster)
         vuePropertySetter(app, 'logger', logger)
+        vuePropertySetter(app, 'formatters', formatters)
         if(process.env.VUE_APP_DRM_ENABLED == 'true'){
             vuePropertySetter(app, 'DRM', DRM)
         }

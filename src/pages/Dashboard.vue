@@ -14,7 +14,7 @@
         <div
           class="w-full max-w-5xl 2xl:max-w-screen-2xl text-center text-white"
         >
-          <div class="text-center pb-8 lg:text-4xl font-bold py-2">
+          <div class="text-center font-ubuntu font-bold text-3xl sm:text-4xl xl:text-5xl pb-8">
             Visi8 News
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3">
@@ -22,10 +22,10 @@
               <div class="px-2 pb-5">
                 <img
                   class="justify-center w-full h-32 object-cover"
-                  :src="item.image"
+                  :src="processImageUrl(item.image)"
                 />
                 <div class="text-sm flex pt-1">
-                  <div>{{ item.date }}</div>
+                  <div>{{ formatters.absoluteTime(item.date) }}</div>
                   <div class="px-3">{{ item.category }}</div>
                 </div>
                 <div class="font-bold text-lg text-left"><a :href="item.url" class="underline">{{ item.title }}</a></div>
@@ -74,7 +74,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'SSb0da8HXyie7DbcAEve' },
+                            { id: '6h1uZMOOqoTfgDnpEnYx' },
                             {},
                             'string'
                           )
@@ -97,7 +97,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'SSb0da8HXyie7DbcAEve' },
+                            { id: '6h1uZMOOqoTfgDnpEnYx' },
                             {},
                             'string'
                           )
@@ -120,7 +120,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'C92HPPzTxMzlV7i5gE5b' },
+                            { id: 'ILzPmysDOg2f63y8D9zc' },
                             {},
                             'string'
                           )
@@ -143,7 +143,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'C92HPPzTxMzlV7i5gE5b' },
+                            { id: 'ILzPmysDOg2f63y8D9zc' },
                             {},
                             'string'
                           )
@@ -166,7 +166,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'xFpjBfVeF4d1XSBQexKV' },
+                            { id: 'aq3UaPI8RQ4yGllMnr0D' },
                             {},
                             'string'
                           )
@@ -189,7 +189,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'xFpjBfVeF4d1XSBQexKV' },
+                            { id: 'aq3UaPI8RQ4yGllMnr0D' },
                             {},
                             'string'
                           )
@@ -212,7 +212,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'B114It2pQmMTIb6JIjGc' },
+                            { id: 'gZVZcjGLMmCNtUJTVN82' },
                             {},
                             'string'
                           )
@@ -235,7 +235,7 @@
                         :to="
                           routeResolver(
                             'Comic',
-                            { id: 'B114It2pQmMTIb6JIjGc' },
+                            { id: 'gZVZcjGLMmCNtUJTVN82' },
                             {},
                             'string'
                           )
@@ -245,7 +245,7 @@
                     </router-link>
                     <div
                       id="dashboard-desc-item4"
-                      class="pb-16 text-base pt-5 lg:text-lg font-open-sans"
+                      class="text-base pt-5 lg:text-lg font-open-sans"
                     >
                       {{ $t("seventhDescription") }}
                     </div>
@@ -269,6 +269,8 @@ import Author from "@/firebase/Author";
 import Setting from "@/firebase/Setting";
 import { useMeta } from "vue-meta";
 import { authorLimitTen, orderByLimit } from "../firebase/utils/queries.js";
+import News from "../firebase/News.js";
+import isNil from "lodash/isNil";
 // import { where } from 'firebase/firestore'
 // import Tag from '../firebase/Tag.js'
 // import UserRole from '../firebase/UserRole.js'
@@ -355,6 +357,15 @@ export default {
   },
   inject: ["routeResolver"],
   methods: {
+    async fetchNews(){
+      this.news = await News.getNews()
+    },
+    processImageUrl(url) {
+      if(isNil(url) || (typeof url === "string" && url.length === 0)) {
+        return require("@/assets/kara_crop.jpg");
+      }
+      return url;
+    },
     processToAuthorHorizontalSlider() {},
     async fetchBanners() {
       const banners = await Setting.getBanners();
@@ -467,6 +478,8 @@ export default {
     };
   },
   mounted() {
+    this.fetchNews()
+
     if (!this.karaOnly) {
       this.fetchComics();
       this.fetchAuthors();
@@ -524,13 +537,13 @@ export default {
     drop-shadow(0 0px 0px rgb(0 0 0 / 0));
 }
 .content-card-container:hover {
-  transform: scale(1.1, 1.1);
+  transform: scale(1.05, 1.05);
   border: 1px rgb(108, 108, 108) solid;
   background: rgba(0, 0, 0, 0.25);
   filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 /* #content-list-container::before{
     content: ' ';

@@ -91,7 +91,7 @@
                         :placeholder="$t('messagePlaceholder')"
                     ></textarea>
                 </label>
-                <div class="mb-6">
+                <div>
                     <button
                         type="submit"
                         class="text-xs lg:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
