@@ -12,7 +12,7 @@ export default class extends Collection{
     }
 
     static async getNews(){
-        const news = await this.getDocuments([ orderBy("date"), limit(3) ])
+        const news = await this.getDocuments([ orderBy("date", "desc"), limit(3) ])
         return news
     }
 }

@@ -362,7 +362,7 @@ export default {
     },
     processImageUrl(url) {
       if(isNil(url) || (typeof url === "string" && url.length === 0)) {
-        return require("@/assets/kara_crop.jpg");
+        return require("@/assets/postcard_03.jpg");
       }
       return url;
     },

@@ -12,7 +12,7 @@ export default {
         }
     },
     methods: {
-        test(){
+        testa(){
             console.log('test')
         }
     },

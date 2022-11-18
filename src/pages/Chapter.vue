@@ -55,20 +55,21 @@
                 </div>
             </div> -->
 
-            <div class="bg-indigo-800 mx-32 my-3 py-6 rounded-xl">
+            <div class="bg-indigo-800 mx-auto max-w-2xl my-3 py-6 rounded-xl">
                 <div class="flex items-center justify-center">
-                    <svg class="w-16 h-16" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        viewBox="0 0 491.537 491.537" style="enable-background:new 0 0 491.537 491.537; fill: #ffffff;" xml:space="preserve">
+                    <svg class="w-16 h-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="enable-background:new 0 0 491.537 491.537; fill: #ffffff;"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 32V49.88C328.5 61.39 384 124.2 384 200V233.4C384 278.8 399.5 322.9 427.8 358.4L442.7 377C448.5 384.2 449.6 394.1 445.6 402.4C441.6 410.7 433.2 416 424 416H24C14.77 416 6.365 410.7 2.369 402.4C-1.628 394.1-.504 384.2 5.26 377L20.17 358.4C48.54 322.9 64 278.8 64 233.4V200C64 124.2 119.5 61.39 192 49.88V32C192 14.33 206.3 0 224 0C241.7 0 256 14.33 256 32V32zM216 96C158.6 96 112 142.6 112 200V233.4C112 281.3 98.12 328 72.31 368H375.7C349.9 328 336 281.3 336 233.4V200C336 142.6 289.4 96 232 96H216zM288 448C288 464.1 281.3 481.3 269.3 493.3C257.3 505.3 240.1 512 224 512C207 512 190.7 505.3 178.7 493.3C166.7 481.3 160 464.1 160 448H288z"/></svg>
+                    <!-- <svg class="w-16 h-16" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                        viewBox="0 0 491.537 491.537" style="enable-background:new 0 0 491.537 491.537; fill: #ffffff;">
                         <g>
                             <g>
                                 <path d="M488.117,459.466l-223.1-447.2c-10.4-17.4-32-13.1-37.5,0l-225.2,449.3c-8,15.6,6.3,29.2,18.8,29.2h449.6c0,0,0.3,0,0.8,0
-                                    C487.517,490.766,497.017,472.466,488.117,459.466z M54.417,450.066l191.8-383.6l190.8,383.7h-382.6V450.066z"/>
+                                    C487.517,490.766,497.017,472.466,488.117,459.466z M54.417,450.066l191.8-383.6l190.8,383.7h-382.6V450.066z" />
                                 <path d="M225.417,206.166v104.3c0,11.5,9.4,20.9,20.9,20.9c11.5,0,19.8-8.3,20.9-19.8v-105.4c0-11.5-9.4-20.9-20.9-20.9
-                                    C234.817,185.266,225.417,194.666,225.417,206.166z"/>
-                                <circle cx="246.217" cy="388.066" r="20.5"/>
+                                    C234.817,185.266,225.417,194.666,225.417,206.166z" />
+                                <circle cx="246.217" cy="388.066" r="20.5" />
                             </g>
                         </g>
-                    </svg>
+                    </svg> -->
                 </div>
                 <div class="pt-6 px-10 text-white text-center font-bold text-lg">
                     Our comics will soon be available at 
